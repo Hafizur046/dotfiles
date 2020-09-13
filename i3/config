@@ -305,7 +305,7 @@ assign [class="dolphin"] $ws8
 
 #startup prgorams ---
 exec_always feh --bg-scale /home/hafizur/Downloads/wallpapers/kali/kali-linux-wallpaper-v8.png #set wallpaper
-exec ./mountdrives.sh
+#exec ./mountdrives.sh
 
 #set brightness
 exec_always xbacklight -set 1 -time 500
