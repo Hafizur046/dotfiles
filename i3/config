@@ -305,7 +305,7 @@ assign [class="Thunar"] $ws8
 assign [class="dolphin"] $ws8
 
 #startup prgorams ---
-exec_always feh --bg-scale /home/hafizur/Downloads/wallpapers/kali/kali-linux-wallpaper-v8.png #set wallpaper
+exec_always feh --bg-scale  ~/.config/i3/wallpaper.png #set wallpaper
 #exec ./mountdrives.sh
 
 #set brightness
@@ -322,5 +322,5 @@ bindsym $mod+shift+p exec postman
 bindsym $mod+shif+ exec lxappearance
 
 #interactive screenshot by pressing printscreen
-bindsym Print exec xfce4-screenshooter -f 
+bindsym Print exec xfce4-screenshooter -f
 
