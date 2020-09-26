@@ -1,3 +1,4 @@
+# !/bin/bash
 sudo pacman -Syy i3 i3blocks feh rofi
 cp -r i3 ~/.config/
 cp -r i3blocks ~/.config/
