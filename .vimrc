@@ -3,10 +3,10 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin('~/.config/nvim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'airbnb/javascript'
-Plug 'itchyny/lightline.vim'
+"Plug 'airbnb/javascript'
+Plug 'vim-airline/vim-airline'
 Plug 'scrooloose/nerdtree'
-Plug 'weirongxu/coc-explorer'
+"Plug 'weirongxu/coc-explorer'
 "Plug 'tsony-tsonev/nerdtree-git-plugin'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
@@ -15,13 +15,12 @@ Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 Plug 'scrooloose/nerdcommenter'
 "Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
-
+Plug 'sheerun/vim-polyglot'
 Plug 'christoomey/vim-tmux-navigator'
-
-Plug 'morhetz/gruvbox'
-
-"Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
+Plug 'tomasiser/vim-code-dark'
+Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 Plug 'pangloss/vim-javascript'
+Plug 'jiangmiao/auto-pairs'
 
 " Initialize plugin system
 call plug#end()
@@ -32,6 +31,9 @@ endfunction
 
 
 inoremap jk <ESC>
+
+nmap <space>e :CocCommand explorer<CR>
+
 nmap <C-n> :NERDTreeToggle<CR>
 nmap <C-m> :NERDTreeMirror<CR>
 vmap cc <plug>NERDCommenterToggle
@@ -46,6 +48,12 @@ map tl :tabn<cr>
 " open NERDTree automatically
 "autocmd StdinReadPre * let s:std_in=1
 "autocmd VimEnter * NERDTree
+
+" reopening a file
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$")
+    \| exe "normal! g'\"" | endif
+endif
 
 let g:NERDTreeGitStatusWithFlags = 1
 "let g:WebDevIconsUnicodeDecorateFolderNodes = 1
@@ -65,6 +73,8 @@ let g:NERDTreeGitStatusWithFlags = 1
 let g:NERDTreeIgnore = ['^node_modules$']
 
 let g:javascript_plugin_jsdoc = 1
+
+"let g:javascript_plugin_flow = 1
 
 
 " vim-prettier
@@ -97,7 +107,7 @@ set shiftwidth=2
 " always uses spaces instead of tab characters
 set expandtab
 
-colorscheme gruvbox
+colorscheme codedark
 
 " sync open file with NERDTree
 " " Check if NERDTree is open or active
@@ -114,16 +124,23 @@ endfunction
 " Highlight currently open buffer in NERDTree
 "autocmd BufEnter * call SyncTree()
 
-" coc config
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"                                 Configuring CoC                           "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 let g:coc_global_extensions = [
   \ 'coc-snippets',
-  \ 'coc-pairs',
   \ 'coc-tsserver',
   \ 'coc-eslint', 
   \ 'coc-prettier', 
   \ 'coc-json', 
   \ 'coc-explorer',
+  \ 'coc-flow',
+  \ 'coc-html',
+  \ 'coc-stylelint'
   \ ]
+
 " from readme
 " if hidden is not set, TextEdit might fail.
 set hidden " Some servers have issues with backup files, see #649 set nobackup set nowritebackup " Better display for messages set cmdheight=2 " You will have bad experience for diagnostic messages when it's default 4000.
@@ -226,12 +243,13 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 
 " Add status line support, for integration with other plugin, checkout `:h coc-status`
 set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+let g:airline#extensions#tabline#enabled = 1
 
 " Using CocList
 " Show all diagnostics
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+"nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
 " Show commands
 nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document

@@ -9,5 +9,14 @@
     "typescript.tsx",
     "graphql"
   ],
-  "tsserver.enableJavascript": true
+  "tsserver.enableJavascript": true,
+  "flow.enable": true,
+  "flow.useNPMPackagedFlow": true,
+  "explorer.width": 30,
+  "explorer.icon.enableNerdfont": true,
+  "explorer.previewAction.onHover": false,
+  "explorer.keyMappings": {
+    "<cr>": ["expandable?", "expand", "open"],
+    "v": "open:vsplit"
+  }
 }
