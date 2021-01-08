@@ -44,8 +44,8 @@ nmap cc <plug>NERDCommenterToggle
 
 "map <C-t><up> :tabr<cr>
 "map <C-t><down> :tabl<cr>
-map th :tabp<cr>
-map tl :tabn<cr>
+"map th :tabp<cr>
+"map tl :tabn<cr>
 
 
 " open NERDTree automatically
