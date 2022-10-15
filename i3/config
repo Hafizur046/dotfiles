@@ -1,19 +1,9 @@
-# i3 config file (v4)
-
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
-
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-
-font pango:Ubuntu Mono, FontAwesome 10
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
-
-# The combination of xss-lock, nm-applet and pactl is a popular choice, so
-# they are included here as an example. Modify as you see fit.
+font pango:Comfortaa Regular, FontAwesome 10
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
@@ -22,21 +12,12 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
-#exec nm-applet
-
-# Use pactl to adjust volume in PulseAudio.
-#set $refresh_i3status killall -SIGUSR1 i3status
-#bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
-#bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
-#bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
-#bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
-#bindsym $mod+Return exec i3-sensible-terminal
-bindsym $mod+Return exec xfce4-terminal
+bindsym $mod+Return exec --no-startup-id xfce4-terminal
 
 # kill focused window
 bindsym $mod+q kill
@@ -64,16 +45,10 @@ set $base0D #97bbf7
 set $base0E #c0b7f9
 set $base0F #fcc09e
 
-# start dmenu (a program launcher)
-#bindsym $mod+d exec rofi -show run -lines 5 -eh 2 -width 100 -padding 500 -opacity "80" -bw 0 -bc "$base01" -bg "$base02" -fg "$base07" -hlbg "$base05" -columns 2 -font "System San Francisco Display 18" -hlfg "#9575cd"
+# start rofi (a program launcher)
 bindsym $mod+d exec --no-startup-id rofi -show run
-#bindsym $mod+d exec rofi -show run -lines 5 -eh 2 -width 100 -padding 500 -opacity "80" -bw 0 -bc "#2f343f" -bg "#2f343f" -fg "$text-color" -hlbg "$bg-color" -columns 1 -font "System San Francisco Display 18" -hlfg "$text-color"
-#bindsym $mod+d exec rofi -show run -lines 3 -show-icons -eh 2 -width 100 -bw 0 -bc "#000" -bg "$bg-color" -fg "$text-color" -hlbg "$bg-color" -hlfg "#9575cd" -font "System San Francisco Display 18"
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that
-# installed.
-# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
-#bindsym $mod+d exec rofi -show run -lines 3 -eh 2 -width 100 -padding 800
+#using mod+o as a test
+bindsym $mod+o exec --no-startup-id rofi -show run
 
 # change focus
 bindsym $mod+j focus left
@@ -172,6 +147,9 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
+#Switch between modes
+bindsym $mod+r mode "resize"
+bindsym $mod+b mode "brightness"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -198,8 +176,6 @@ mode "resize" {
         bindsym $mod+r mode "default"
 }
 
-bindsym $mod+r mode "resize"
-
 mode "brightness" {
 
 	# Sreen brightness controls
@@ -216,25 +192,15 @@ mode "brightness" {
 	bindsym Escape mode "default"
 }
 
-bindsym $mod+b mode "brightness"
-
 #window title alignment
 title_align center
 
-
-
-#cl: 676e7d
-
-
-
-
-# window colors
-#                       border              background         text                 indicator
+#window colors
+#state                  border              background         text                 indicator
 client.focused          $bg-color           $bg-color          $text-color          #00ff00
 client.unfocused        $inactive-bg-color  #20232a            $inactive-text-color #00ff00
-client.focused_inactive $inactive-bg-color #20232a	       $inactive-text-color #00ff00
+client.focused_inactive $inactive-bg-color  #20232a	           $inactive-text-color #00ff00
 client.urgent           $urgent-bg-color    $urgent-bg-color   $text-color          #00ff0f
-
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -242,11 +208,11 @@ bar {
 	strip_workspace_numbers yes
 	tray_padding 2
 	#workspace_buttons no
-        status_command i3blocks -c ~/.config/i3blocks/config
+    status_command i3blocks -c ~/.config/i3blocks/config
 	separator_symbol "|"
 	colors {
 		background $bg-color
-	    	separator #000
+	    separator #000
 		#                  border             background         text
 		focused_workspace  $bg-color          $bg-color          $text-color
 		inactive_workspace $inactive-bg-color $inactive-bg-color $inactive-text-color
@@ -276,48 +242,27 @@ bindsym shift+XF86MonBrightnessDown exec xbacklight -dec 20 # decrease screen br
 # Touchpad controls
 bindsym XF86TouchpadToggle exec ./toggletouchpad.sh # toggle touchpad
 
+#interactive screenshot by pressing printscreen
+bindsym Print exec --no-startup-id xfce4-screenshooter -f 
+
 #force programs to open on a certain workspace
 #assign [class="classname"] $workspacevariable
-#ws1
-assign [class="Gnome-terminal"] $ws1
-#ws2
 assign [class="Chromium"] $ws2
 assign [class="firefox"] $ws2
 assign [class="Opera"] $ws2
 assign [class="java-lang-Thread"] $ws2
-#ws3
 assign [class="Atom"] $ws3
 assign [class="code-oss"] $ws3
-#ws4
 assign [class="postman"] $ws4
-#ws5
 assign [class="TelegramDesktop"] $ws5
-#ws6
 assign [class="Lxappearance"] $ws6
-#ws8
 assign [class="Thunar"] $ws8
 assign [class="dolphin"] $ws8
-#ws9
 assign [class="vlc"] $ws9
 
 #startup prgorams ---
-#exec_always --no-startup-id feh --bg-scale /home/hafizur/Downloads/wallpapers/kali/kali-linux-wallpaper-v8.png #set wallpaper
-exec_always --no-startup-id feh --bg-scale ./pexels-travis-blessing-1363876.jpg
-exec --no-startup-id ~/.config/i3/mountdrives.sh
+exec_always --no-startup-id feh --bg-scale /home/hafizur/wallpapers/kali/kali-linux-wallpaper-v5.png
+exec_always --no-startup-id emote
 
 #set brightness
 exec_always --no-startup-id xbacklight -set 1 -time 500
-
-#custom keybindings
-bindsym $mod+shift+t exec --no-startup-id ~/.Packages/Telegram/Telegram
-bindsym $mod+shift+v exec vlc
-bindsym $mod+shift+b exec chromium
-bindsym $mod+shift+a exec atom
-bindsym $mod+shift+o exec code
-bindsym $mod+shift+f exec thunar
-bindsym $mod+shift+p exec postman
-bindsym $mod+shif+ exec lxappearance
-
-#interactive screenshot by pressing printscreen
-bindsym Print exec --no-startup-id xfce4-screenshooter -f 
-
