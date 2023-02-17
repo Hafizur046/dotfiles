@@ -29,6 +29,7 @@ let g:coc_global_extensions = [
   \ 'coc-explorer',
   \ 'coc-html',
   \ 'coc-css',
+  \ 'coc-eslint'
   \ ]
 
 set clipboard+=unnamedplus
