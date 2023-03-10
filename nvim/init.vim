@@ -29,7 +29,8 @@ let g:coc_global_extensions = [
   \ 'coc-explorer',
   \ 'coc-html',
   \ 'coc-css',
-  \ 'coc-eslint'
+  \ 'coc-eslint',
+  \ 'coc-rust-analyzer'
   \ ]
 
 set clipboard+=unnamedplus
@@ -83,14 +84,25 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 " Remap for rename current word
 nmap <F2> <Plug>(coc-rename)
+" Remaps for coc.nvim stuffs 
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Custom functions
-"Setting up clipboard to work
 function! ClipboardYank()
   call system('xclip -i -selection clipboard', @@)
 endfunction
 function! ClipboardPaste()
   let @@ = system('xclip -o -selection clipboard')
+endfunction
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 " Custom Commands
