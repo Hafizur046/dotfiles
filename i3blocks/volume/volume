@@ -17,6 +17,32 @@
 
 #------------------------------------------------------------------------
 
+# Fall back to pactl when amixer is unavailable (common with PipeWire).
+if ! command -v amixer >/dev/null 2>&1; then
+    if [[ -z "$STEP" ]] ; then
+        STEP="${1:-5%}"
+    fi
+    if [[ "$STEP" == *dB ]] ; then
+        STEP="5%"
+    fi
+    SINK="${SINK:-@DEFAULT_SINK@}"
+
+    case $BLOCK_BUTTON in
+      3) pactl set-sink-mute "$SINK" toggle ;;  # right click, mute/unmute
+      4) pactl set-sink-volume "$SINK" "+$STEP" ;; # scroll up, increase
+      5) pactl set-sink-volume "$SINK" "-$STEP" ;; # scroll down, decrease
+    esac
+
+    mute=$(pactl get-sink-mute "$SINK" | awk '{print $2}')
+    if [[ "$mute" == "yes" ]] ; then
+        output="MUTE"
+    else
+        output=$(pactl get-sink-volume "$SINK" | head -n1 | sed -n 's/.*\/ *\([0-9]\+%\).*/\1/p')
+    fi
+    echo "${LABEL}${output}"
+    exit 0
+fi
+
 # The second parameter overrides the mixer selection
 # For PulseAudio users, eventually use "pulse"
 # For Jack/Jack2 users, use "jackplug"

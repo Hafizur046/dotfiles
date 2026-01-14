@@ -32,7 +32,7 @@ markup=none
 # Date Time
 [time]
 label=  
-command=date '+%m-%d %H:%M'
+command=sh -c 'echo "BDT $(TZ=Asia/Dhaka date "+%m-%d %H:%M") | UTC $(TZ=UTC date "+%m-%d %H:%M") | IST $(TZ=Asia/Kolkata date "+%m-%d %H:%M")"'
 interval=1
 separator=true
 
@@ -46,7 +46,7 @@ separator=true
 [volume]
 label=  
 #label=VOL
-interval=once
+interval=1
 signal=10
 #STEP=5%
 
